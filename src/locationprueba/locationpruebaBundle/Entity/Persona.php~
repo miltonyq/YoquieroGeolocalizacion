@@ -1,0 +1,83 @@
+<?php
+
+namespace Location\LocationBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ *@ORM\Table(name="persona")
+ *@ORM\Entity  
+ */
+class Persona 
+{
+    //Id de Persona
+    /**
+     * @ORM\Id
+     * @ORM\Column(type="integer")
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    protected $id;
+    
+    //FacebookKid de Persona
+    /**
+     * @ORM\Column(type="integer")
+     */
+    protected $facebookid;
+    
+    //Nombre de Persona
+    /**
+     * @ORM\Column(type="string")
+     */
+    protected $nombre;
+    
+    //Apellido de Persona
+    /**
+     * @ORM\Column(type="string")
+     */
+    protected $apellido;
+    
+    //FechaNacimiento de Persona
+    /**
+     * @ORM\Column(type="date")
+     */
+    protected $fechanacimiento;
+    
+    //Profesion de Persona
+    /**
+     * @ORM\Column(type="string")
+     */
+    protected $profesion;
+    
+    //Descripcion de Persona
+    /**
+     * @ORM\Column(type="string")
+     */
+    protected $descripcion;
+    
+    //Sexo de Persona
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    protected $sexo;
+    
+    //Puntos de Persona
+    /**
+     * @ORM\Column(type="integer")
+     */
+    protected $puntosPersona;
+    
+    //Coordenadas de localizacion de Persona relacion de 1 a *
+    /**
+     * @ORM\OneToMany(targetEntity="Coordenada", 
+     * mappedBy="persona")
+     */
+    protected $coordenadas;
+    
+    //Usuario que es la Persona relacion de 1 a 1
+    /**
+    * @ORM\OneToOne(targetEntity="Usuario")
+    * @ORM\JoinColumn(name="usuario_id", referencedColumnName="id")
+    */
+    protected $usuario;
+}
+?>

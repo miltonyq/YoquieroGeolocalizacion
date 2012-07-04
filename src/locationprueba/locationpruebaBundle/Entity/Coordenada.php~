@@ -1,0 +1,32 @@
+<?php
+
+namespace locationprueba\locationpruebaBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ *@ORM\Table(name="coordenada")
+ *@ORM\Entity  
+ */
+class Coordenada 
+{
+    //Id de Coordenada
+    /**
+     * @ORM\Id
+     * @ORM\Column(type="integer")
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    protected $id;
+    
+    //Latitud de Coordenada
+    /**
+     * @ORM\Column(type="float")
+     */
+    protected $latitud;
+    
+    //Longitud de Coordenada
+    /**
+     * @ORM\Column(type="float")
+     */
+    protected $longitud;
+}

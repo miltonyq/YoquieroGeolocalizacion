@@ -1,0 +1,145 @@
+{# 
+ * Description of Comentario
+ *
+ * @author JASMANY
+ #}
+{%spaceless%}
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <title>Geolocalizacion</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+        <script type="text/javascript" src="{{asset ('http://HTML5shim.googlecode.com/svn/trunk/HTML5.js')}}"></script>    
+        <script type="text/javascript" src="{{asset ('http://maps.googleapis.com/maps/api/js?sensor=false')}}"></script>
+
+        {#<script type="text/javascript" src="{{asset ('bundles/Geolocation/js/mimapa.js')}}"></script>#}
+        <script> 
+       
+        var markersArray = [];
+        var vlatlon = new Array();
+        var cont = 1;
+        var cont1 = 1;
+        
+        
+        function localizar()
+        {
+                navigator.geolocation.getCurrentPosition(inicio,error);
+        }
+	
+        function inicio(pos) 
+        {
+		
+                   
+                {% for latlon in latlong %}                   
+                    var latitud = {{latlon.latitud}};
+                    var longitud = {{latlon.longitud}};
+                    vlatlon[cont] = new google.maps.LatLng(latitud,longitud);
+                    cont = cont + 1;
+                {% endfor %} 
+                
+                if (vlatlon.length == 0){   
+                    var latitud = pos.coords.latitude;
+                    var longitud = pos.coords.longitude;
+                }
+                
+                
+                document.formulario.__latitud.value = latitud;
+                document.formulario.__longitud.value = longitud;
+	 	
+                var myLatlng = new google.maps.LatLng(latitud,longitud);
+                
+                var myOptions = {
+                    center: myLatlng,
+                    mapTypeId: google.maps.MapTypeId.ROADMAP,
+                    
+                    navigationControlOptions: {
+                        style: google.maps.NavigationControlStyle.SMALL,
+                        style: google.maps.MapTypeControlStyle.DROPDOWN_MENU,
+                        position: google.maps.ControlPosition.CENTER_BOTTOM},
+                        mapTypeControlOptions: {
+                        style: google.maps.MapTypeControlStyle.DROPDOWN_MENU,
+                        position: google.maps.ControlPosition.LEFT_BOTTOM
+                    },
+                    zoom: 20    
+                }
+                map = new google.maps.Map(document.getElementById("mapa"), myOptions);
+	  
+                var icono = new google.maps.MarkerImage(
+                'http://www.maestrosdelweb.com/images/2011/04/sprite.png',
+                new google.maps.Size(30,43),
+                new google.maps.Point(0,0),
+                new google.maps.Point(15,43)  
+                );
+                
+ 
+                for (cont1 in vlatlon)
+                { 
+                   var marker = new google.maps.Marker({
+                   draggable: false,
+                   position: vlatlon[cont1],
+                   map: map,
+                   title: cont1,
+                   icon: icono
+                   });
+                   cont1 = cont1 + 1;
+                }
+
+                google.maps.event.addListener(map, 'click', function(event) {
+                placeMarker(event.latLng);
+                });
+                
+		
+        }
+  
+        function placeMarker(location) 
+        {
+		
+                if(markersArray.length!=0)
+                {
+                        for (i in markersArray) {
+                          markersArray[i].setMap(null);
+                        }
+                        markersArray.length = 0;
+                }
+                var marker = new google.maps.Marker({
+                 position: location, 
+                 map: map
+                });
+		
+                markersArray.push(marker);
+                var markerLatLng = marker.getPosition();
+              
+                document.formulario.__latitud.value=markerLatLng.lat();
+                document.formulario.__longitud.value=markerLatLng.lng();
+        }
+	
+        function error(errorC)
+        {
+                if(errorC.code== 0)
+                alert("Error desconocido");
+                else if(errorC.code==1)
+                alert("No me dejaste ubicarte");
+                else if(errorC.code==2)
+                alert("Posicion no disponible");
+                else if(errorC.code==3)
+                alert("Me rendi, no puedo Ubicarte");
+        }
+        function verifica()
+        {
+		
+                document.formulario.submit();
+        }
+            </script>
+
+        </head>    
+        <body onload="localizar()">
+            <div id="mapa" style="width: 600px; height: 500px; margin: 0 auto"></div>
+
+            <form name="formulario" method="POST" >
+                {{ form_rest(form) }}
+                <input type="submit">    
+            </form>
+            </body>
+        </html>
+{%endspaceless%}

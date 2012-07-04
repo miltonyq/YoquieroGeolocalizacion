@@ -1,0 +1,78 @@
+<?php
+
+namespace Location\LocationBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ *@ORM\Table(name="usuario")
+ *@ORM\Entity  
+ */
+
+class Usuario 
+{
+    //Id de Usuario
+    /**
+     * @ORM\Id
+     * @ORM\Column(type="integer")
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    protected $id;
+    
+    //E-mail de Usuario
+    /**
+     * @ORM\Column(type="string")
+     */
+    protected $email;
+    
+    //Password de Usuario
+    /**
+     * @ORM\Column(type="string")
+     */
+    protected $password;
+    
+    //Direccion de Usuario
+    /**
+     * @ORM\Column(type="string")
+     */
+    protected $direccion;
+    
+    //Ciudad de Usuario
+    /**
+     * @ORM\Column(type="string")
+     */
+    protected $ciudad;
+    
+    //Pais de Usuario
+    /**
+     * @ORM\Column(type="string")
+     */
+    protected $pais;
+    
+    //Estado de Usuario(Disponible, No Disponible)
+    /**
+     * @ORM\Column(type="integer")
+     */
+    protected $estado;
+    
+    //Disponibilidad de Usuario(??????)
+    /**
+     * @ORM\Column(type="integer")
+     */
+    protected $disponibilidad;
+    
+    //Url de Foto de Usuario
+    /**
+     * @ORM\Column(type="string")
+     */
+    protected $urlfoto;
+    
+    //Persona que es un Usuario relacion de 1 a 1
+    /**
+    * @ORM\OneToOne(targetEntity="Persona")
+    * @ORM\JoinColumn(name="persona_id", referencedColumnName="id")
+    */
+    protected $persona;
+    
+}
+?>

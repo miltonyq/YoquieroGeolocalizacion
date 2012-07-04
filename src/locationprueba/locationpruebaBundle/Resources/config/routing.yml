@@ -1,0 +1,3 @@
+geolocal:
+    pattern:  /locacion
+    defaults: { _controller: locationpruebaBundle:local:locacion }
